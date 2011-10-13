@@ -74,21 +74,7 @@ $(document).ready ->
       if neighbor is true 
         neighbor_count += 1;
 
-      offset = coordinates[direction]
-      x_coord = offset[0] + x
-      y_coord = offset[1] + y
-
-      neighbors.push [neighbor, x_coord, y_coord]
-
-
     being = worlds[previous][x][y]
-    if being is true
-      str = "A"
-    else
-      str = "D"
-
-    #if neighbor_count > 0
-    #  console.info str, "x", x, "y", y, "nc", neighbor_count, "ns", neighbors
 
     should_be = null
     if being is true 

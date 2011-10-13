@@ -83,7 +83,7 @@
       return pixels[offset + 3] = 255;
     };
     to_be_or_not_to_be = function(x, y) {
-      var being, direction, neighbor, neighbor_count, neighbors, offset, should_be, str, x_coord, y_coord;
+      var being, direction, neighbor, neighbor_count, neighbors, should_be;
       neighbor_count = 0;
       neighbors = [];
       for (direction = 0; direction <= 7; direction++) {
@@ -91,17 +91,8 @@
         if (neighbor === true) {
           neighbor_count += 1;
         }
-        offset = coordinates[direction];
-        x_coord = offset[0] + x;
-        y_coord = offset[1] + y;
-        neighbors.push([neighbor, x_coord, y_coord]);
       }
       being = worlds[previous][x][y];
-      if (being === true) {
-        str = "A";
-      } else {
-        str = "D";
-      }
       should_be = null;
       if (being === true) {
         if (neighbor_count < 2 || neighbor_count > 3) {
