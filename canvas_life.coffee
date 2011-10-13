@@ -82,18 +82,16 @@ $(document).ready ->
 
     being = worlds[previous][x][y]
 
-    should_be = null
     if being is true 
       if neighbor_count < 2 || neighbor_count > 3
         should_be = false 
       else
         should_be = true
-    if being is false
+    else
       if neighbor_count is 3
         should_be = true
       else
         should_be = false
-    should_be
 
 
   # Neighbor coordinates
@@ -111,24 +109,39 @@ $(document).ready ->
   # Test neighbors
   whos_there = (x,y, direction) ->
     offset = coordinates[direction]
-    x_coord = offset[0] + x
-    y_coord = offset[1] + y
+    coords = coordinate_wrap(offset[0]+x, offset[1]+y)
 
-    if x_coord < 0
-      x_coord = world_w-1
-    if x_coord > world_w-1
-      x_coord = 0
-
-    if y_coord < 0
-      y_coord = world_w-1
-    if y_coord > world_w-1
-      y_coord = 0
-
-    worlds[previous][x_coord][y_coord]
+    worlds[previous][coords.x][coords.y]
 
 
   # Shape insert
-  spawn_life = (x,y, being) ->
+  spawn_life = (x_dest,y_dest, being) ->
+    coords
+    for bb in [0..0]
+      console.info "woo"
+    for y in [0..being.length-1]
+      for x in [0..being[y].length-1]
+        coords = coordinate_wrap(x+x_dest, y+y_dest)
+        if being[y][x] is 0
+          worlds[current][coords.x][coords.y] = false 
+        else
+          worlds[current][coords.x][coords.y] = true
+    coords
+
+
+  
+  # Donut world
+  coordinate_wrap = (x,y) ->
+    {x:digit_wrap(x), y:digit_wrap(y)}
+
+
+  # JS modulo fix
+  digit_wrap = (value) ->
+    mod = value%world_w
+    if mod < 0
+      mod + world_w
+    else
+      mod
 
 
   # Life forms!
@@ -187,6 +200,10 @@ $(document).ready ->
 
   # Go!
   worlds = [empty_world().slice(0), empty_world().slice(0)]
+
+  spawn_life 20,20, f_pentamino
+  spawn_life 10,10, lightweight_spaceship
+  spawn_life 50,100, acorn
 
   back_to_the_future()
   animation = setInterval(just_another_day, 1000/24)

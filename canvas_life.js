@@ -1,6 +1,6 @@
 (function() {
   $(document).ready(function() {
-    var acorn, alive, animation, back_to_the_future, beacon, blinker, block, canvas, context, coordinates, current, dead, draw_life, draw_life_at, draw_nothing_at, empty_world, f_pentamino, glider, image, infinite_bar, infinite_cube, just_another_day, let_there_be_life, lightweight_spaceship, pixels, previous, spawn_life, to_be_or_not_to_be, whos_there, world_w, worlds, write_pixel;
+    var acorn, alive, animation, back_to_the_future, beacon, blinker, block, canvas, context, coordinate_wrap, coordinates, current, dead, digit_wrap, draw_life, draw_life_at, draw_nothing_at, empty_world, f_pentamino, glider, image, infinite_bar, infinite_cube, just_another_day, let_there_be_life, lightweight_spaceship, pixels, previous, spawn_life, to_be_or_not_to_be, whos_there, world_w, worlds, write_pixel;
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
     world_w = canvas.width;
@@ -93,22 +93,19 @@
         }
       }
       being = worlds[previous][x][y];
-      should_be = null;
       if (being === true) {
         if (neighbor_count < 2 || neighbor_count > 3) {
-          should_be = false;
+          return should_be = false;
         } else {
-          should_be = true;
+          return should_be = true;
         }
-      }
-      if (being === false) {
+      } else {
         if (neighbor_count === 3) {
-          should_be = true;
+          return should_be = true;
         } else {
-          should_be = false;
+          return should_be = false;
         }
       }
-      return should_be;
     };
     coordinates = {
       0: [-1, -1],
@@ -121,25 +118,44 @@
       7: [1, 0]
     };
     whos_there = function(x, y, direction) {
-      var offset, x_coord, y_coord;
+      var coords, offset;
       offset = coordinates[direction];
-      x_coord = offset[0] + x;
-      y_coord = offset[1] + y;
-      if (x_coord < 0) {
-        x_coord = world_w - 1;
-      }
-      if (x_coord > world_w - 1) {
-        x_coord = 0;
-      }
-      if (y_coord < 0) {
-        y_coord = world_w - 1;
-      }
-      if (y_coord > world_w - 1) {
-        y_coord = 0;
-      }
-      return worlds[previous][x_coord][y_coord];
+      coords = coordinate_wrap(offset[0] + x, offset[1] + y);
+      return worlds[previous][coords.x][coords.y];
     };
-    spawn_life = function(x, y, being) {};
+    spawn_life = function(x_dest, y_dest, being) {
+      coords;
+      var bb, coords, x, y, _ref, _ref2;
+      for (bb = 0; bb <= 0; bb++) {
+        console.info("woo");
+      }
+      for (y = 0, _ref = being.length - 1; 0 <= _ref ? y <= _ref : y >= _ref; 0 <= _ref ? y++ : y--) {
+        for (x = 0, _ref2 = being[y].length - 1; 0 <= _ref2 ? x <= _ref2 : x >= _ref2; 0 <= _ref2 ? x++ : x--) {
+          coords = coordinate_wrap(x + x_dest, y + y_dest);
+          if (being[y][x] === 0) {
+            worlds[current][coords.x][coords.y] = false;
+          } else {
+            worlds[current][coords.x][coords.y] = true;
+          }
+        }
+      }
+      return coords;
+    };
+    coordinate_wrap = function(x, y) {
+      return {
+        x: digit_wrap(x),
+        y: digit_wrap(y)
+      };
+    };
+    digit_wrap = function(value) {
+      var mod;
+      mod = value % world_w;
+      if (mod < 0) {
+        return mod + world_w;
+      } else {
+        return mod;
+      }
+    };
     glider = [[0, 1, 0], [0, 0, 1], [1, 1, 1]];
     lightweight_spaceship = [[1, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 1], [0, 1, 1, 1, 1]];
     blinker = [[1, 1, 1]];
@@ -150,6 +166,9 @@
     infinite_cube = [[1, 1, 1, 0, 1], [1, 0, 0, 0, 0], [0, 0, 0, 1, 1], [0, 1, 1, 0, 1], [1, 0, 1, 0, 1]];
     infinite_bar = [[1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1]];
     worlds = [empty_world().slice(0), empty_world().slice(0)];
+    spawn_life(20, 20, f_pentamino);
+    spawn_life(10, 10, lightweight_spaceship);
+    spawn_life(50, 100, acorn);
     back_to_the_future();
     return animation = setInterval(just_another_day, 1000 / 24);
   });
