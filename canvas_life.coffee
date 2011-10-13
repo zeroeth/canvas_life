@@ -20,16 +20,16 @@ $(document).ready ->
 
   # Life
   let_there_be_life = ->
-    for y in [1..world_w-2]
-      for x in [1..world_w-2]
+    for y in [0..world_w-1]
+      for x in [0..world_w-1]
         worlds[current][x][y] = to_be_or_not_to_be(x,y)
     back_to_the_future()
       
 
   # Swap
    back_to_the_future = ->
-    for y in [1..world_w-2]
-      for x in [1..world_w-2]
+    for y in [0..world_w-1]
+      for x in [0..world_w-1]
         if worlds[current][x][y] is true
           worlds[previous][x][y] = true
         else
@@ -96,20 +96,20 @@ $(document).ready ->
 
   # Neighbor coordinates
   coordinates =
-    0: [-1,-1]
-    1: [ 0,-1]
-    2: [ 1,-1]
-    3: [-1, 1]
-    4: [ 0, 1]
-    5: [ 1, 1]
-    6: [-1, 0]
-    7: [ 1, 0]
+    0: {x:-1,y:-1}
+    1: {x: 0,y:-1}
+    2: {x: 1,y:-1}
+    3: {x:-1,y: 1}
+    4: {x: 0,y: 1}
+    5: {x: 1,y: 1}
+    6: {x:-1,y: 0}
+    7: {x: 1,y: 0}
 
 
   # Test neighbors
   whos_there = (x,y, direction) ->
     offset = coordinates[direction]
-    coords = coordinate_wrap(offset[0]+x, offset[1]+y)
+    coords = coordinate_wrap(offset.x+x, offset.y+y)
 
     worlds[previous][coords.x][coords.y]
 
@@ -198,12 +198,32 @@ $(document).ready ->
     [1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,0,1,1,1,1,1]
   ]
 
+  slab = [
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+  ]
+
   # Go!
   worlds = [empty_world().slice(0), empty_world().slice(0)]
 
   spawn_life 20,20, f_pentamino
-  spawn_life 10,10, lightweight_spaceship
+  spawn_life 40,10, lightweight_spaceship
+  spawn_life 40,25, glider
   spawn_life 50,100, acorn
+  spawn_life 120,120, infinite_cube
+  spawn_life 150, 150, slab
 
   back_to_the_future()
+
   animation = setInterval(just_another_day, 1000/24)

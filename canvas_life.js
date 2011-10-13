@@ -1,6 +1,6 @@
 (function() {
   $(document).ready(function() {
-    var acorn, alive, animation, back_to_the_future, beacon, blinker, block, canvas, context, coordinate_wrap, coordinates, current, dead, digit_wrap, draw_life, draw_life_at, draw_nothing_at, empty_world, f_pentamino, glider, image, infinite_bar, infinite_cube, just_another_day, let_there_be_life, lightweight_spaceship, pixels, previous, spawn_life, to_be_or_not_to_be, whos_there, world_w, worlds, write_pixel;
+    var acorn, alive, animation, back_to_the_future, beacon, blinker, block, canvas, context, coordinate_wrap, coordinates, current, dead, digit_wrap, draw_life, draw_life_at, draw_nothing_at, empty_world, f_pentamino, glider, image, infinite_bar, infinite_cube, just_another_day, let_there_be_life, lightweight_spaceship, pixels, previous, slab, spawn_life, to_be_or_not_to_be, whos_there, world_w, worlds, write_pixel;
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
     world_w = canvas.width;
@@ -17,8 +17,8 @@
     };
     let_there_be_life = function() {
       var x, y, _ref, _ref2;
-      for (y = 1, _ref = world_w - 2; 1 <= _ref ? y <= _ref : y >= _ref; 1 <= _ref ? y++ : y--) {
-        for (x = 1, _ref2 = world_w - 2; 1 <= _ref2 ? x <= _ref2 : x >= _ref2; 1 <= _ref2 ? x++ : x--) {
+      for (y = 0, _ref = world_w - 1; 0 <= _ref ? y <= _ref : y >= _ref; 0 <= _ref ? y++ : y--) {
+        for (x = 0, _ref2 = world_w - 1; 0 <= _ref2 ? x <= _ref2 : x >= _ref2; 0 <= _ref2 ? x++ : x--) {
           worlds[current][x][y] = to_be_or_not_to_be(x, y);
         }
       }
@@ -27,11 +27,11 @@
     back_to_the_future = function() {
       var x, y, _ref, _results;
       _results = [];
-      for (y = 1, _ref = world_w - 2; 1 <= _ref ? y <= _ref : y >= _ref; 1 <= _ref ? y++ : y--) {
+      for (y = 0, _ref = world_w - 1; 0 <= _ref ? y <= _ref : y >= _ref; 0 <= _ref ? y++ : y--) {
         _results.push((function() {
           var _ref2, _results2;
           _results2 = [];
-          for (x = 1, _ref2 = world_w - 2; 1 <= _ref2 ? x <= _ref2 : x >= _ref2; 1 <= _ref2 ? x++ : x--) {
+          for (x = 0, _ref2 = world_w - 1; 0 <= _ref2 ? x <= _ref2 : x >= _ref2; 0 <= _ref2 ? x++ : x--) {
             _results2.push(worlds[current][x][y] === true ? worlds[previous][x][y] = true : worlds[previous][x][y] = false);
           }
           return _results2;
@@ -108,19 +108,43 @@
       }
     };
     coordinates = {
-      0: [-1, -1],
-      1: [0, -1],
-      2: [1, -1],
-      3: [-1, 1],
-      4: [0, 1],
-      5: [1, 1],
-      6: [-1, 0],
-      7: [1, 0]
+      0: {
+        x: -1,
+        y: -1
+      },
+      1: {
+        x: 0,
+        y: -1
+      },
+      2: {
+        x: 1,
+        y: -1
+      },
+      3: {
+        x: -1,
+        y: 1
+      },
+      4: {
+        x: 0,
+        y: 1
+      },
+      5: {
+        x: 1,
+        y: 1
+      },
+      6: {
+        x: -1,
+        y: 0
+      },
+      7: {
+        x: 1,
+        y: 0
+      }
     };
     whos_there = function(x, y, direction) {
       var coords, offset;
       offset = coordinates[direction];
-      coords = coordinate_wrap(offset[0] + x, offset[1] + y);
+      coords = coordinate_wrap(offset.x + x, offset.y + y);
       return worlds[previous][coords.x][coords.y];
     };
     spawn_life = function(x_dest, y_dest, being) {
@@ -165,10 +189,14 @@
     acorn = [[0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0], [1, 1, 0, 0, 1, 1, 1]];
     infinite_cube = [[1, 1, 1, 0, 1], [1, 0, 0, 0, 0], [0, 0, 0, 1, 1], [0, 1, 1, 0, 1], [1, 0, 1, 0, 1]];
     infinite_bar = [[1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1]];
+    slab = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
     worlds = [empty_world().slice(0), empty_world().slice(0)];
     spawn_life(20, 20, f_pentamino);
-    spawn_life(10, 10, lightweight_spaceship);
+    spawn_life(40, 10, lightweight_spaceship);
+    spawn_life(40, 25, glider);
     spawn_life(50, 100, acorn);
+    spawn_life(120, 120, infinite_cube);
+    spawn_life(150, 150, slab);
     back_to_the_future();
     return animation = setInterval(just_another_day, 1000 / 24);
   });
