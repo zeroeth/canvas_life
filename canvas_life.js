@@ -1,6 +1,6 @@
 (function() {
   $(document).ready(function() {
-    var alive, animation, back_to_the_future, canvas, context, coordinates, current, dead, draw_life, draw_life_at, draw_nothing_at, empty_world, image, just_another_day, let_there_be_life, pixels, previous, to_be_or_not_to_be, whos_there, world_w, worlds, write_pixel;
+    var acorn, alive, animation, back_to_the_future, beacon, blinker, block, canvas, context, coordinates, current, dead, draw_life, draw_life_at, draw_nothing_at, empty_world, f_pentamino, glider, image, infinite_bar, infinite_cube, just_another_day, let_there_be_life, lightweight_spaceship, pixels, previous, spawn_life, to_be_or_not_to_be, whos_there, world_w, worlds, write_pixel;
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
     world_w = canvas.width;
@@ -139,19 +139,17 @@
       }
       return worlds[previous][x_coord][y_coord];
     };
+    spawn_life = function(x, y, being) {};
+    glider = [[0, 1, 0], [0, 0, 1], [1, 1, 1]];
+    lightweight_spaceship = [[1, 0, 0, 1, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 1], [0, 1, 1, 1, 1]];
+    blinker = [[1, 1, 1]];
+    beacon = [[1, 1, 0, 0], [1, 0, 0, 0], [0, 0, 0, 1], [0, 0, 1, 1]];
+    block = [[1, 1], [1, 1]];
+    f_pentamino = [[0, 1, 1], [1, 1, 0], [0, 1, 0]];
+    acorn = [[0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0], [1, 1, 0, 0, 1, 1, 1]];
+    infinite_cube = [[1, 1, 1, 0, 1], [1, 0, 0, 0, 0], [0, 0, 0, 1, 1], [0, 1, 1, 0, 1], [1, 0, 1, 0, 1]];
+    infinite_bar = [[1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1]];
     worlds = [empty_world().slice(0), empty_world().slice(0)];
-    worlds[current][101][120] = true;
-    worlds[current][102][121] = true;
-    worlds[current][100][122] = true;
-    worlds[current][101][122] = true;
-    worlds[current][102][122] = true;
-    worlds[current][61][200] = true;
-    worlds[current][62][200] = true;
-    worlds[current][63][200] = true;
-    worlds[current][80][80] = true;
-    worlds[current][81][80] = true;
-    worlds[current][80][81] = true;
-    worlds[current][81][81] = true;
     back_to_the_future();
     return animation = setInterval(just_another_day, 1000 / 24);
   });

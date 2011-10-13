@@ -25,6 +25,7 @@ $(document).ready ->
         worlds[current][x][y] = to_be_or_not_to_be(x,y)
     back_to_the_future()
       
+
   # Swap
    back_to_the_future = ->
     for y in [1..world_w-2]
@@ -33,6 +34,7 @@ $(document).ready ->
           worlds[previous][x][y] = true
         else
           worlds[previous][x][y] = false 
+
 
   # Draw
   draw_life = ->
@@ -46,12 +48,14 @@ $(document).ready ->
     context.putImageData image, 0, 0
 
 
-  # Helpers
+  # Initialize worlds
   empty_world = ->
     for y in [0..world_w-1]
       for x in [0..world_w-1]
         false
-    
+   
+
+  # Drawing helpers
   draw_life_at = (x,y) ->
     write_pixel x,y, 0,255,255
 
@@ -66,6 +70,8 @@ $(document).ready ->
     pixels[offset+2] = b
     pixels[offset+3] = 255
     
+
+  # Game of life rules
   to_be_or_not_to_be = (x,y) ->
     neighbor_count = 0
     neighbors = []
@@ -87,9 +93,10 @@ $(document).ready ->
         should_be = true
       else
         should_be = false
-
     should_be
 
+
+  # Neighbor coordinates
   coordinates =
     0: [-1,-1]
     1: [ 0,-1]
@@ -100,6 +107,8 @@ $(document).ready ->
     6: [-1, 0]
     7: [ 1, 0]
 
+
+  # Test neighbors
   whos_there = (x,y, direction) ->
     offset = coordinates[direction]
     x_coord = offset[0] + x
@@ -118,23 +127,66 @@ $(document).ready ->
     worlds[previous][x_coord][y_coord]
 
 
+  # Shape insert
+  spawn_life = (x,y, being) ->
+
+
+  # Life forms!
+  glider = [
+    [0,1,0]
+    [0,0,1]
+    [1,1,1]
+  ]
+
+  lightweight_spaceship = [
+    [1,0,0,1,0]
+    [0,0,0,0,1]
+    [1,0,0,0,1]
+    [0,1,1,1,1]
+  ]
+
+  blinker = [
+    [1,1,1]
+  ]
+
+  beacon = [
+    [1,1,0,0]
+    [1,0,0,0]
+    [0,0,0,1]
+    [0,0,1,1]
+  ]
+
+  block = [
+    [1,1]
+    [1,1]
+  ]
+
+  f_pentamino = [
+    [0,1,1]
+    [1,1,0]
+    [0,1,0]
+  ]
+
+  acorn = [
+    [0,1,0,0,0,0,0]
+    [0,0,0,1,0,0,0]
+    [1,1,0,0,1,1,1]
+  ]
+
+  infinite_cube = [
+    [1,1,1,0,1]
+    [1,0,0,0,0]
+    [0,0,0,1,1]
+    [0,1,1,0,1]
+    [1,0,1,0,1]
+  ]
+
+  infinite_bar = [
+    [1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,0,1,1,1,1,1]
+  ]
+
   # Go!
   worlds = [empty_world().slice(0), empty_world().slice(0)]
-
-  worlds[current][101][120] = true
-  worlds[current][102][121] = true
-  worlds[current][100][122] = true
-  worlds[current][101][122] = true
-  worlds[current][102][122] = true
-
-  worlds[current][61][200] = true
-  worlds[current][62][200] = true
-  worlds[current][63][200] = true
-
-  worlds[current][80][80] = true
-  worlds[current][81][80] = true
-  worlds[current][80][81] = true
-  worlds[current][81][81] = true
 
   back_to_the_future()
   animation = setInterval(just_another_day, 1000/24)
