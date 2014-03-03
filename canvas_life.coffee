@@ -123,12 +123,12 @@ $(document).ready ->
       for x in [0..dna[y].length-1]
         coords = coordinate_wrap(x+x_dest, y+y_dest)
         if dna[y][x] is 0
-          worlds[current][coords.y][coords.x] = false 
+          worlds[current][coords.y][coords.x] = false
         else
           worlds[current][coords.y][coords.x] = true
     coords
 
-  
+
   # Donut world
   coordinate_wrap = (x,y) ->
     {x:digit_wrap_x(x), y:digit_wrap_y(y)}
